@@ -59,10 +59,13 @@ body {
 /* SORT ARRAY BUTTONS */
 .nav-button {
 	display: flex;
-	padding: 5px 10px;
+	padding-left: min(10px, .3vw);
+	padding-right: min(10px, .3vw);
+	padding-top: 5px;
+	padding-bottom: 5px;
 	border-radius: 2px;
 	font-weight: bold;
-	font-size: max(0.9vw, .5em);
+	font-size: max(0.7vw, .4em);
 	background-color: #444757;
 	border: 5px solid #444757;
 	color: white;
@@ -87,6 +90,7 @@ body {
 .generate-array button {
 	background-color: #9e1a1a;
 	border: 5px solid #9e1a1a;
+	min-width: 70px;
 }
 
 .generate-array button:hover {
