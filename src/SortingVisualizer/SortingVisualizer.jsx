@@ -11,17 +11,20 @@ const WIDTH_PERCENT = 0.8;
 
 // Change this percent to change the amount of viewport heigh taken up by the number bars
 // Range from 0 - 1
-const HEIGHT_PERCENT = 0.88;
+const HEIGHT_PERCENT = 0.85;
 
 // This px value corresponds to the number bar width
-const BAR_WIDTH = 10;
+const BAR_WIDTH = 8;
 
 // This px value corresponds to the number bar left & right margin
 const MARGIN = 1;
 
-export const DEFAULT_COLOUR = `white`;
+const TIMER_WIDTH = 66;
+
+const DEFAULT_COLOUR = `white`;
 const COMPARISON_COLOUR = `red`;
-const SORTED_COLOUR = `teal`;
+const SORTED_COLOUR = `#006666`;
+const COMPLTED_COLOUR = `teal`;
 
 class SortingVisualizer extends React.Component {
 	constructor(props) {
@@ -37,9 +40,12 @@ class SortingVisualizer extends React.Component {
 
 	resetArray() {
 		const array = [];
-		const arrayLength = Math.floor(window.innerWidth * WIDTH_PERCENT / (BAR_WIDTH + MARGIN * 2));
+		// Minus 1 because there is an invisble max bar always in the array used to set
+		// the height of the div while sorting is taking place
+		const arrayLength =
+			Math.floor((window.innerWidth - TIMER_WIDTH) * WIDTH_PERCENT / (BAR_WIDTH + MARGIN * 2)) - 1;
 		const height = Math.floor(window.innerHeight * HEIGHT_PERCENT);
-
+		console.log(arrayLength);
 		for (let i = 0; i < arrayLength; i++) {
 			let num = Math.floor(Math.random() * height + 1) + 5;
 			array.push(num);
@@ -183,6 +189,7 @@ class SortingVisualizer extends React.Component {
 
 	whileRunning(time, id) {
 		const buttons = [ 'newarray', 'msort', 'hsort', 'bsort', 'qsort' ];
+		const HALF_SECOND = 500;
 
 		buttons.forEach((element) => {
 			document.getElementById(element).disabled = true;
@@ -200,7 +207,32 @@ class SortingVisualizer extends React.Component {
 
 			document.getElementById(id).style.backgroundColor = '';
 			document.getElementById(id).style.border = '';
-		}, time);
+
+			const bars = document.getElementsByClassName(`array-bar`);
+			for (let i = 0; i < bars.length; i++) bars[i].style.backgroundColor = COMPLTED_COLOUR;
+		}, time + HALF_SECOND);
+
+		let timerLength = Math.ceil(time / 1000);
+		let timer = document.getElementById('timer');
+		let totalSeconds = 1;
+		timer.textContent = `0:01`;
+
+		timer.style.color = '';
+		timer.style.backgroundColor = '';
+
+		for (let i = 0; i < timerLength; i++) {
+			let min = `${Math.floor(totalSeconds / 60)}`;
+			let seconds = totalSeconds % 60 < 10 ? `0${totalSeconds % 60}` : `${totalSeconds % 60}`;
+			totalSeconds++;
+			setTimeout(() => {
+				timer.textContent = `${min}:${seconds}`;
+			}, i * 1000);
+		}
+
+		setTimeout(() => {
+			timer.style.color = `grey`;
+			timer.style.backgroundColor = `#1e1e26`;
+		}, timerLength * 1000);
 	}
 
 	test(algorithim) {
@@ -263,6 +295,12 @@ class SortingVisualizer extends React.Component {
 								this.resetArray();
 								const bars = document.getElementsByClassName(`array-bar`);
 								for (let i = 0; i < bars.length; i++) bars[i].style.backgroundColor = DEFAULT_COLOUR;
+
+								let timer = document.getElementById('timer');
+
+								timer.style.color = '';
+								timer.style.backgroundColor = '';
+								timer.textContent = '0:00';
 							}}
 						>
 							New Array
@@ -305,6 +343,9 @@ class SortingVisualizer extends React.Component {
 					<div className="hide-if-small">
 						<p className="brand">AMAN CHHINA</p>
 					</div>
+				</div>
+				<div id="timer" className="timer" style={{ width: `${TIMER_WIDTH}px` }}>
+					0:00
 				</div>
 				<div className="array-container">
 					{/* This div is created to have a fixed bar with a height that is the max possible height in the array.
