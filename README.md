@@ -1,3 +1,19 @@
+# Sorting Visualizer
+
+## Website Link
+
+https://amanc92.github.io/sorting-visualizer/
+
+## Summary
+
+This website gives you a visual repersentation of various sorting algorithms and the benefits and costs of the different data structures they use. This is done mostly through the visualization of the impact on speed & efficiency on unsorted arrays.
+
+You can also see the benefits and costs of different algorithms by also sorting sorted arrays.
+
+The time in seconds is not meant to repersent the actual time to implement the different algorithms, but it does show the cost of each array manipulation and that is then in the time as an imapct on the number of visualizations required for each array. This visualization steps in time, roughly translate to the cost of implementing each algorithm with the benefit of more easily digestible numbers.
+
+## React Auto-generated README
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
